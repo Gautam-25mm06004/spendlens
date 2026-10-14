@@ -1,0 +1,8 @@
+Extract structured data from this receipt or invoice image.
+
+Rules:
+- Return merchant name, date (YYYY-MM-DD), ISO currency code, category, tax, total, and line items.
+- Each field must include a confidence score from 0 to 1.
+- If the image is not a receipt/invoice or is unreadable, set isReceipt to false.
+- Line item amounts should sum with tax to approximately equal total (rounding OK).
+- Use the document's native currency; do not convert currencies.

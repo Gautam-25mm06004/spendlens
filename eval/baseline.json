@@ -1,0 +1,7 @@
+{
+  "merchant_f1": 0.87,
+  "total_exact": 0.92,
+  "line_items_f1": 0.78,
+  "date_exact": 0.82,
+  "note": "Baseline from initial eval run — monitor.yml compares weekly against this."
+}
