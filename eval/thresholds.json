@@ -1,6 +1,5 @@
 {
   "merchant_f1": 0.85,
   "total_exact": 0.90,
-  "line_items_f1": 0.75,
   "date_exact": 0.80
 }

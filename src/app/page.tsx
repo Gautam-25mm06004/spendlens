@@ -93,10 +93,10 @@ export default function HomePage() {
           <Card>
             <CardHeader>
               <CardTitle>Eval in CI</CardTitle>
-              <CardDescription>30-receipt harness blocks quality regressions</CardDescription>
+              <CardDescription>Field-level eval runs on every pull request</CardDescription>
             </CardHeader>
             <CardContent className="text-sm text-muted-foreground">
-              Field-level F1 gates on every PR — portfolio-grade observability.
+              Merchant, total and date accuracy checked against thresholds, plus a weekly drift run.
             </CardContent>
           </Card>
         </div>

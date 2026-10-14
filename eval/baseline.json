@@ -1,7 +1,3 @@
 {
-  "merchant_f1": 0.87,
-  "total_exact": 0.92,
-  "line_items_f1": 0.78,
-  "date_exact": 0.82,
-  "note": "Baseline from initial eval run — monitor.yml compares weekly against this."
+  "note": "No baseline yet. Label receipts in eval/labels.json, run python eval/run_eval.py, and copy the metrics from eval/results.json into this file. monitor.yml fails if a metric drops more than 0.03 below these values."
 }

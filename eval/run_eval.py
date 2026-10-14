@@ -104,7 +104,6 @@ def main() -> int:
         "merchant_f1": merchant_f1(merchants_p, merchants_t),
         "total_exact": score_field(totals_p, totals_t),
         "date_exact": score_field(dates_p, dates_t),
-        "line_items_f1": 1.0,  # expand when labels include line items
         "n": len(merchants_t),
     }
 
@@ -125,6 +124,7 @@ def main() -> int:
         lines.append(f"| {key} | {score:.3f} | {threshold} | {'✅' if ok else '❌'} |")
 
     (EVAL / "results.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (EVAL / "results.json").write_text(json.dumps(metrics, indent=2) + "\n", encoding="utf-8")
     print("\n".join(lines))
 
     if failed:
