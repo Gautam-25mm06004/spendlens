@@ -5,10 +5,6 @@ on:
     - cron: "0 6 * * 1"
   workflow_dispatch:
 
-defaults:
-  run:
-    working-directory: 5-spendlens
-
 jobs:
   drift:
     runs-on: ubuntu-latest
@@ -22,12 +18,29 @@ jobs:
         env:
           GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
         run: python eval/run_eval.py
-      - name: Check drift vs baseline
+      - name: Compare with baseline
         run: |
           python - <<'PY'
           import json
+          import sys
           from pathlib import Path
-          # Parse results.md metrics — simplified: compare thresholds pass
+
+          TOLERANCE = 0.03
           baseline = json.loads(Path("eval/baseline.json").read_text())
-          print("Monitor complete. Review eval/results.md for drift vs baseline:", baseline)
+          results_path = Path("eval/results.json")
+          if not results_path.exists():
+              print("No eval/results.json (no labelled receipts or no API key): nothing to compare.")
+              sys.exit(0)
+          results = json.loads(results_path.read_text())
+          metrics = {k: v for k, v in baseline.items() if isinstance(v, (int, float))}
+          if not metrics:
+              print("eval/baseline.json has no metrics yet: copy them from eval/results.json once labels exist.")
+              sys.exit(0)
+          drops = {k: (v, results.get(k, 0.0)) for k, v in metrics.items() if results.get(k, 0.0) < v - TOLERANCE}
+          print("baseline:", metrics)
+          print("current: ", {k: results.get(k) for k in metrics})
+          if drops:
+              print(f"Drift beyond {TOLERANCE}:", drops)
+              sys.exit(1)
+          print(f"No metric dropped more than {TOLERANCE} below baseline.")
           PY

@@ -2,16 +2,8 @@ name: SpendLens Eval
 
 on:
   pull_request:
-    paths:
-      - "5-spendlens/**"
   push:
     branches: [main]
-    paths:
-      - "5-spendlens/**"
-
-defaults:
-  run:
-    working-directory: 5-spendlens
 
 jobs:
   unit:
@@ -22,7 +14,7 @@ jobs:
         with:
           node-version: "22"
           cache: npm
-          cache-dependency-path: 5-spendlens/package-lock.json
+          cache-dependency-path: package-lock.json
       - run: npm ci
       - run: npm test
 
@@ -34,7 +26,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r eval/requirements.txt
-      - name: Run eval (limited on PR)
+      - name: Run eval (first 5 labelled receipts on pull requests)
         env:
           GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
         run: python eval/run_eval.py --limit 5
